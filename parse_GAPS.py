@@ -8,8 +8,8 @@
 import pynmea2
 import string
 import datetime
-
-
+import calendar
+import time
 
 
 #GAPSlog = open('/Users/opizarro/data/TunaSand/GAPSexample/20140605163#709-001.dat')
@@ -73,16 +73,24 @@ for line in GAPSlog:
 
 
 
-            timestring = year + ' ' + month + ' ' + day + ' ' + hh +':' + mm + ':' + ss
-            print(timestring)
-            dt= datetime.datetime.strptime(timestring, "%Y %m %d %H:%M:%S")
+            # timestring = year + ' ' + month + ' ' + day + ' ' + hh +':' + mm + ':' + ss
+            # print(timestring)
+            # dt= datetime.datetime.strptime(timestring, "%Y %m %d %H:%M:%S")
+            # this requires python 3.3
+            #utime_nomicro = (dt - datetime.datetime(1970, 1, 1)) / datetime.timedelta(seconds=1)
 
+            # withmicroseconds
+            #utime = utime_nomicro + float(micros) / 1000
 
-            utime_nomicro = (dt - datetime.datetime(1970,1,1))/datetime.timedelta(seconds=1)
+            tyear = int(year)
+            tmonth = int(month)
+            tday = int(day)
+            thour = int(hh)
+            tminute = int(mm)
+            tsecond = float(ss)+float(micros)/1000
+            tunix = calendar.timegm([tyear, tmonth, tday, thour, tminute, tsecond])
+            tstruc = time.gmtime(tunix)
 
-            #withmicroseconds
-            utime = utime_nomicro + float(micros) / 1000
-
-            outputstr = 'GPS_RMC: {:.3f}\t Lat:{:.6f} {} Lon:{:.6f} {} Bad:0 A Spd:0 Crs:0 Mg:nan\n'.format(utime,Lat,NS,Lon,EW)
+            outputstr = 'GPS_RMC: {:.3f}\t Lat:{:.6f} {} Lon:{:.6f} {} Bad:0 A Spd:0 Crs:0 Mg:nan\n'.format(tunix,Lat,NS,Lon,EW)
             print(outputstr)
             GAPS_rawlog.write(outputstr)
