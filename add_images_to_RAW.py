@@ -10,6 +10,7 @@ import re
 import time
 import calendar
 import sys
+import argparse
 
 #rawfile = '/media/lagoon/RAW_DATA/ScottReef200907/r20090726_074343_scott_05_long_transect_auv2/d20090726_074343/20090726_0743.RAW.auv'
 #idir = '/Users/opizarro/research/data/seagras
@@ -17,9 +18,24 @@ import sys
 #idir = '/media/lagoon/RAW_DATA/ScottReef200907/r20090726_074343_scott_05_long_transect_auv2/i20090726_074343/*.pgm'
 # example of image name PR_20081012_021022_110_LC16.jpg
 
+
+parser = argparse.ArgumentParser(description="generates VIS: entries from imagen file names and"
+                                 " applies time offset. ")
+
 # read in arguments
-idir = sys.argv[1]
-rawoutdir = sys.argv[2]
+#idir = sys.argv[1]
+#rawoutdir = sys.argv[2]
+
+msg = "directory with raw stereo images"
+parser.add_argument("idir", help=msg)
+
+msg = "output directory for RAW.auv file with VIS: entries"
+parser.add_argument("rawoutdir", help=msg)
+
+msg = "time offset in seconds added to camera time stamps to line up with Phins"
+parser.add_argument("cam2phins_offset",type=float, help=msg)
+
+args = parser.parse_args()
 
 
 # list of images

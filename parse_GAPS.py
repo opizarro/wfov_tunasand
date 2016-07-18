@@ -6,21 +6,36 @@
 #fprintf(fid,'GPS_RMC: %.3f\t Lat:%.6f N Lon:%.6f W Bad:0 A Spd:0 Crs:0 Mg:nan\n',sps.t(k),sps.lat(k),sps.lon(k));
 
 import pynmea2
-import string
-import datetime
 import calendar
 import time
-
+import sys
+import argparse
 
 #GAPSlog = open('/Users/opizarro/data/TunaSand/GAPSexample/20140605163#709-001.dat')
 #GAPSlog = open('/Users/opizarro/data/TunaSand/Dive_15/GAPS/20160714124941-003.dat')
-GAPSlog = open('/media/data/RAW_DATA/Sesoko201607/TunaSand/Dive_16/GAPS/combinedGAPS16.dat')
 
-GAPS_rawlog = open('/tmp/test.RAW.auv','w')
+#GAPSlog = open('/media/data/RAW_DATA/Sesoko201607/TunaSand/Dive_16/GAPS/combinedGAPS16.dat')
+#GAPS_rawlog = open('/tmp/test.RAW.auv','w')
 
+#GAPSlog = open(sys.argv[1])
+#GAPS_rawlog = open(sys.arv[2],'w')
+#cam2phins_offset = float(sys.arv[3]) # seconds to add to cam timestamp to line up with Phins
 
-#head=GAPSlog.readline()
-#print head
+parser = argparse.ArgumentParser(description="generates a file with RAW.auv entries for the GAPS USBL")
+
+msg = "GAPS log file (if more than one, concatenate in the command line before running)"
+parser.add_argument("GAPSlog", help=msg)
+
+msg = "output file name (will be in RAW.auv format)"
+parser.add_argument("GAPS_rawlog", help=msg)
+
+args = parser.parse_args()
+
+# TODO: check directory vs collection of files and handle both
+# currently assumes files concatenated into one
+GAPSlog = open(args.GAPSlog)
+
+GAPS_rawlog = open(args.GAPS_rawlog,'w')
 
 def dm2dd(dm ):
     degrees = int(dm/100)
@@ -90,7 +105,9 @@ for line in GAPSlog:
             tminute = int(mm)
             tsecond = float(ss)+float(micros)/1000
             tunix = calendar.timegm([tyear, tmonth, tday, thour, tminute, tsecond])
-            tstruc = time.gmtime(tunix)
+
+            #tstruc = time.gmtime(tunix)
+
 
             outputstr = 'GPS_RMC: {:.3f}\t Lat:{:.6f} {} Lon:{:.6f} {} Bad:0 A Spd:0 Crs:0 Mg:nan\n'.format(tunix,Lat,NS,Lon,EW)
             print(outputstr)
