@@ -41,7 +41,7 @@ else:
 if not os.path.isdir(rawoutdir):
     os.makedirs(rawoutdir)
 
-flog_merge = open(rawoutdir+"/VIS"+logname,'w')
+flog_merge = open(rawoutdir+"/VIS"+logname+'.RAW.auv','w')
 
 for imfullpath in imlist:
     (impath,im) = os.path.split(imfullpath)
