@@ -13,9 +13,10 @@ import time
 
 
 #GAPSlog = open('/Users/opizarro/data/TunaSand/GAPSexample/20140605163#709-001.dat')
-GAPSlog = open('/Users/opizarro/data/TunaSand/Dive_15/GAPS/20160714124941-003.dat')
+#GAPSlog = open('/Users/opizarro/data/TunaSand/Dive_15/GAPS/20160714124941-003.dat')
+GAPSlog = open('/media/data/RAW_DATA/Sesoko201607/TunaSand/Dive_16/GAPS/combinedGAPS16.dat')
 
-GAPS_rawlog = open('/Users/opizarro/Downloads/test.RAW.auv','w')
+GAPS_rawlog = open('/tmp/test.RAW.auv','w')
 
 
 #head=GAPSlog.readline()
