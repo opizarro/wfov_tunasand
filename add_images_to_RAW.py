@@ -37,9 +37,8 @@ parser.add_argument("cam2phins_offset",type=float, help=msg)
 
 args = parser.parse_args()
 
-
 # list of images
-imlist = glob.glob(idir + '/*.tif')
+imlist = glob.glob(args.idir + '/*.tif')
 imlist.sort()
 nimages = len(imlist)
 
@@ -52,12 +51,12 @@ else:
     print("\n\nCreating log entries for "+str(nimages)+ " \n")
 
 # create the new log file that will merge both sources of info
-(logpath,logname) = os.path.split(idir)
+(logpath,logname) = os.path.split(args.idir)
 
-if not os.path.isdir(rawoutdir):
-    os.makedirs(rawoutdir)
+if not os.path.isdir(args.rawoutdir):
+    os.makedirs(args.rawoutdir)
 
-flog_merge = open(rawoutdir+"/VIS"+logname+'.RAW.auv','w')
+flog_merge = open(args.rawoutdir+"/VIS"+logname+'.RAW.auv','w')
 
 for imfullpath in imlist:
     (impath,im) = os.path.split(imfullpath)
@@ -78,8 +77,8 @@ for imfullpath in imlist:
     #tstruc = time.strptime(
         
     tunix = calendar.timegm([tyear,tmonth,tday,thour,tminute,tsecond])
-    tstruc = time.gmtime(tunix)
-
+   # tstruc = time.gmtime(tunix)
+    tunix = tunix + args.cam2phins_offset
     # swap extension
     logentry = "VIS: " + "%.3f" % tunix + " [" + "%.3f" % tunix + "] " + im[:-3] + "tif" + "\n"
         #logentry = "VIS: " + "%.3f" % tunix + " [" + "%.3f" % tunix + "] " + im[:-3] + "png" + "\n"
